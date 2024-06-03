@@ -11,3 +11,8 @@ spring:
     properties:
       hibernate:
         format_sql: true # SQL pretty print
+
+logging:
+  level:
+    com:
+      zaxxer: info

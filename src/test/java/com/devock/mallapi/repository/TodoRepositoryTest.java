@@ -25,17 +25,17 @@ public class TodoRepositoryTest {
     @Test
     public void test1() {
         log.info("----------------------");
-        log.info(todoRepository);
+        log.info(todoRepository.getClass().getName());
     }
 
     @Test
     public void testInsert() {
-        for(int i = 1; i <= 100; i++) {
+        for (int i = 1; i <= 100; i++) {
             Todo todo = Todo.builder()
-            .title("Title..." + i)
-            .dueDate(LocalDate.of(2023,12,31))
-            .writer("user00")
-            .build();
+                    .title("Title..." + i)
+                    .dueDate(LocalDate.of(2023, 12, 31))
+                    .writer("user00")
+                    .build();
 
             todoRepository.save(todo);
         }
@@ -56,7 +56,7 @@ public class TodoRepositoryTest {
         Todo todo = result.orElseThrow();
         todo.changeTitle("Modified 33...");
         todo.changeComplete(true);
-        todo.changeDueDate(LocalDate.of(2023,10,10));
+        todo.changeDueDate(LocalDate.of(2023, 10, 10));
 
         todoRepository.save(todo);
 
@@ -67,12 +67,20 @@ public class TodoRepositoryTest {
         Long tno = 1L;
         todoRepository.deleteById(tno);
     }
-    
-    @Test 
+
+    @Test
     public void testPaging() {
-        Pageable pageable = PageRequest.of(0,10, Sort.by("tno").descending());
+        // 페이지 번호는 0부터 시작!!
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("tno").descending());
         Page<Todo> result = todoRepository.findAll(pageable);
         log.info(result.getTotalElements());
         result.getContent().stream().forEach(todo -> log.info(todo));
+    }
+
+    @Test
+    public void testSearch1() {
+
+        todoRepository.search1();
+
     }
 }
