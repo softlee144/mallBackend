@@ -22,11 +22,11 @@ public class TodoServiceTests {
 
     @Test
     public void testRegister() {
-        TodoDTO todoDTO= TodoDTO.builder()
-        .title("서비스 테스트")
-        .writer("tester")
-        .dueDate(LocalDate.of(2023, 10, 10))
-        .build();
+        TodoDTO todoDTO = TodoDTO.builder()
+                .title("서비스 테스트")
+                .writer("tester")
+                .dueDate(LocalDate.of(2023, 10, 10))
+                .build();
 
         Long tno = todoService.register(todoDTO);
         log.info("TNO : " + tno);
@@ -35,20 +35,19 @@ public class TodoServiceTests {
     @Test
     public void testGet() {
         Long tno = 101L;
-        TodoDTO todoDTO = todoService.get(tno);
-        log.info(todoDTO);
+        log.info(todoService.get(tno));
     }
 
     @Test
     public void testList() {
         PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
-        .page(2)
-        .size(10)
-        .build();
+                .page(2)
+                .size(10)
+                .build();
 
         PageResponseDTO<TodoDTO> response = todoService.list(pageRequestDTO);
 
         log.info(response);
     }
-    
+
 }

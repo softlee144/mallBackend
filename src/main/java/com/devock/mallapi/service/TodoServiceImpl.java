@@ -32,13 +32,13 @@ public class TodoServiceImpl implements TodoService {
 
     private final TodoRepository todoRepository;
 
-    @Override 
+    @Override
     public Long register(TodoDTO todoDTO) {
         log.info("............");
 
         Todo todo = modelMapper.map(todoDTO, Todo.class);
         Todo savedTodo = todoRepository.save(todo);
-        
+
         return savedTodo.getTno();
     }
 
@@ -46,8 +46,8 @@ public class TodoServiceImpl implements TodoService {
     public TodoDTO get(Long tno) {
         Optional<Todo> result = todoRepository.findById(tno);
         Todo todo = result.orElseThrow();
-        TodoDTO dto = modelMapper.map(todo, TodoDTO.class);
-        return dto;        
+        // TodoDTO dto = modelMapper.map(todo, TodoDTO.class);
+        return entityToDTO(todo);
     }
 
     @Override
@@ -69,27 +69,26 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public PageResponseDTO<TodoDTO> list(PageRequestDTO pageRequestDTO) {
-        Pageable pageable = 
-        PageRequest.of( 
-            pageRequestDTO.getPage() - 1 ,  // 1페이지가 0이므로 주의 
-            pageRequestDTO.getSize(), 
-            Sort.by("tno").descending());
+        Pageable pageable = PageRequest.of(
+                pageRequestDTO.getPage() - 1, // 1페이지가 0이므로 주의
+                pageRequestDTO.getSize(),
+                Sort.by("tno").descending());
 
-        Page<Todo> result = todoRepository.findAll(pageable);    
+        Page<Todo> result = todoRepository.findAll(pageable);
 
         List<TodoDTO> dtoList = result.getContent().stream()
-        .map(todo -> modelMapper.map(todo, TodoDTO.class))
-        .collect(Collectors.toList());
-        
+                .map(todo -> modelMapper.map(todo, TodoDTO.class))
+                .collect(Collectors.toList());
+
         long totalCount = result.getTotalElements();
 
         PageResponseDTO<TodoDTO> responseDTO = PageResponseDTO.<TodoDTO>withAll()
-        .dtoList(dtoList)
-        .pageRequestDTO(pageRequestDTO)
-        .totalCount(totalCount)
-        .build();
+                .dtoList(dtoList)
+                .pageRequestDTO(pageRequestDTO)
+                .totalCount(totalCount)
+                .build();
 
         return responseDTO;
     }
-    
+
 }
