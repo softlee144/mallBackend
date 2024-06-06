@@ -24,7 +24,7 @@ public class TodoServiceTests {
     public void testRegister() {
         TodoDTO todoDTO = TodoDTO.builder()
                 .title("서비스 테스트")
-                .writer("tester")
+                .content("Content...")
                 .dueDate(LocalDate.of(2023, 10, 10))
                 .build();
 

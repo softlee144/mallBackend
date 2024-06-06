@@ -25,28 +25,29 @@ public class PageResponseDTO<E> {
 
         this.dtoList = dtoList;
         this.pageRequestDTO = pageRequestDTO;
-        this.totalCount = (int)totalCount;
+        this.totalCount = (int) totalCount;
 
-        int end =   (int)(Math.ceil( pageRequestDTO.getPage() / 10.0 )) *  10;
+        // 끝 페이지 end, end 값은 나중에 다시 계산 필요
+        int end = (int) (Math.ceil(pageRequestDTO.getPage() / 10.0)) * 10;
 
         int start = end - 9;
 
-        int last =  (int)(Math.ceil((totalCount/(double)pageRequestDTO.getSize())));
+        // 진짜 마지막 페이지
+        int last = (int) (Math.ceil((totalCount / (double) pageRequestDTO.getSize())));
 
-        end =  end > last ? last: end;
+        end = end > last ? last : end;
 
         this.prev = start > 1;
 
+        this.next = totalCount > end * pageRequestDTO.getSize();
 
-        this.next =  totalCount > end * pageRequestDTO.getSize();
+        this.pageNumList = IntStream.rangeClosed(start, end).boxed().collect(Collectors.toList());
 
-        this.pageNumList = IntStream.rangeClosed(start,end).boxed().collect(Collectors.toList());
-
-        if(prev) {
-            this.prevPage = start -1;
+        if (prev) {
+            this.prevPage = start - 1;
         }
 
-        if(next) {
+        if (next) {
             this.nextPage = end + 1;
         }
 
@@ -55,6 +56,5 @@ public class PageResponseDTO<E> {
         this.current = pageRequestDTO.getPage();
 
     }
-    
-    
+
 }
