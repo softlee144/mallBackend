@@ -12,7 +12,17 @@ spring:
       hibernate:
         format_sql: true # SQL pretty print
 
+  servlet:
+    multipart:
+      max-request-size: 30MB
+      max-file-size: 10MB
+
 logging:
   level:
     com:
       zaxxer: info
+
+com:
+  devock:
+    upload:
+      path: upload

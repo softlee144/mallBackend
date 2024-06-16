@@ -18,17 +18,14 @@ public class CustomControllerAdvice {
   @ExceptionHandler(NoSuchElementException.class)
   protected ResponseEntity<?> notExist(NoSuchElementException e) {
 
-      String msg = e.getMessage();
-
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("msg", msg));
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("msg", e.getMessage()));
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   protected ResponseEntity<?> handleIllegalArgumentException(MethodArgumentNotValidException e) {
 
-      String msg = e.getMessage();
+    String msg = e.getMessage();
 
-      return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Map.of("msg", msg));
+    return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Map.of("msg", msg));
   }
 }
-

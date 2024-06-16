@@ -7,11 +7,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.devock.mallapi.controller.formatter.LocalDateFormatter;
 
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
 @Configuration
 public class CustomServletConfig implements WebMvcConfigurer {
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
+
+        log.info("===============================");
+        log.info("addFormatters");
         registry.addFormatter(new LocalDateFormatter());
     }
 
