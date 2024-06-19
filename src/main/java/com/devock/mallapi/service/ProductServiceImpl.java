@@ -157,4 +157,9 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(product);
     }
 
+    @Override
+    public void remove(Long pno) {
+        productRepository.updateToDelete(pno, true);
+    }
+
 }
