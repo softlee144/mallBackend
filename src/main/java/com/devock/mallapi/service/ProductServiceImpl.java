@@ -1,6 +1,7 @@
 package com.devock.mallapi.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -81,7 +82,7 @@ public class ProductServiceImpl implements ProductService {
         java.util.Optional<Product> result = productRepository.selectOne(pno);
         Product product = result.orElseThrow();
         ProductDTO productDTO = entityToDTO(product);
-        
+
         return productDTO;
     }
 
@@ -128,6 +129,32 @@ public class ProductServiceImpl implements ProductService {
         });
 
         return product;
+    }
+
+    @Override
+    public void modify(ProductDTO productDTO) {
+
+        // 조회
+        Optional<Product> result = productRepository.findById(productDTO.getPno());
+        Product product = result.orElseThrow();
+
+        // 변경 내용 반영
+        product.changeName(productDTO.getPname());
+        product.changeDesc(productDTO.getPdesc());
+        product.changePrice(productDTO.getPrice());
+
+        // 이미지 처리
+        List<String> uploadFileNames = productDTO.getUploadFileNames();
+        product.clearList();
+
+        if (uploadFileNames != null && uploadFileNames.size() > 0) {
+            uploadFileNames.stream().forEach(uploadName -> {
+                product.addImageString(uploadName);
+            });
+        }
+
+        // 저장
+        productRepository.save(product);
     }
 
 }
